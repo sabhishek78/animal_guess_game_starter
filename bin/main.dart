@@ -1,4 +1,74 @@
-main() {}
+import 'dart:io';
+import 'dart:math';
+
+
+class Animal{
+  String questionText;
+  Animal yesNode;
+  Animal noNode;
+  String name;
+  Animal(this.questionText,this.name);
+
+}
+void traverseTree(Animal animal){
+while(animal.yesNode!=null || animal.noNode!=null)
+  {
+    print("${animal.questionText}");
+    String response=stdin.readLineSync();
+    if(response=="yes"){
+      animal=animal.yesNode;
+    }else if(response=="no"){
+      animal=animal.noNode;
+    }
+  }
+  print("${animal.name}");
+  return;
+}
+
+main() {
+Animal first=Animal("Can it Fly?","");
+Animal second=Animal("Can it Swim","");
+Animal third=Animal("Can it climb trees?","");
+
+Animal fourth=Animal("","Duck");
+Animal fifth=Animal("","Parrot");
+Animal sixth=Animal("","Monkey");
+Animal seventh=Animal("Is it a Pet?","");
+Animal eighth=Animal("","Dog");
+Animal ninth=Animal("","Is it taller than 2 meters?");
+Animal tenth=Animal("","Giraffe");
+Animal eleventh= Animal("","Fox");
+first.yesNode=second;
+first.noNode=third;
+
+second.yesNode=fourth;
+second.noNode=fifth;
+third.yesNode=sixth;
+third.noNode=seventh;
+seventh.yesNode=eighth;
+seventh.noNode=ninth;
+ninth.yesNode=tenth;
+ninth.noNode=eleventh;
+fourth.yesNode=null;
+fourth.noNode=null;
+fifth.yesNode=null;
+fifth.noNode=null;
+sixth.yesNode=null;
+sixth.noNode=null;
+eighth.yesNode=null;
+eighth.noNode=null;
+tenth.noNode=null;
+tenth.noNode=null;
+eleventh.yesNode=null;
+eleventh.noNode=null;
+traverseTree(first);
+print("End of Tree");
+
+
+
+
+
+}
 
 /// Sample Output
 // Think of an animal
