@@ -9,19 +9,61 @@ class Animal{
   String name;
   Animal(this.questionText,this.name);
 
+
 }
-void traverseTree(Animal animal){
+bool nodePointer=false;
+createNewNode(Animal animal, Animal previousNode, bool nodePointer){
+  print("What is the animal?");
+  String newAnimal=stdin.readLineSync();
+  Animal newAnswerNode=Animal("","Is it a ${newAnimal}?");//New Node Created
+  print("What question would distinguish between an ${animal.name} and a ${newAnimal}?");
+  String newQuestion=stdin.readLineSync();
+  Animal newQuestionNode=Animal("${newQuestion}","");
+  if(nodePointer) // add new node to yes node of previous node
+      {
+
+    previousNode.yesNode=newQuestionNode;
+    newQuestionNode.noNode=newAnswerNode;
+    newQuestionNode.yesNode=animal;
+
+
+  }
+  else{
+    previousNode.noNode=newQuestionNode;
+    newQuestionNode.yesNode=newAnswerNode;
+    newQuestionNode.noNode=animal;
+
+  }
+
+
+}
+void traverseTree(Animal animal, Animal previousNode){
 while(animal.yesNode!=null || animal.noNode!=null)
   {
     print("${animal.questionText}");
     String response=stdin.readLineSync();
     if(response=="yes"){
+      previousNode=animal;
+      nodePointer=true;// save previous node
       animal=animal.yesNode;
     }else if(response=="no"){
+      nodePointer=false;
+      previousNode=animal;// save previous node
       animal=animal.noNode;
     }
   }
-  print("${animal.name}");
+  print("${animal.name}"); //depending upon users response we will create a new node or end the game
+String response=stdin.readLineSync();
+if(response=="yes"){
+  print("End of Game!");
+}
+else if(response=="no"){
+  // Create a new Node
+  print("Oops looks like I need to improve!");
+  createNewNode(animal,previousNode,nodePointer);
+}
+
+
   return;
 }
 
@@ -30,14 +72,14 @@ Animal first=Animal("Can it Fly?","");
 Animal second=Animal("Can it Swim","");
 Animal third=Animal("Can it climb trees?","");
 
-Animal fourth=Animal("","Duck");
-Animal fifth=Animal("","Parrot");
-Animal sixth=Animal("","Monkey");
+Animal fourth=Animal("","Is it a Duck?");
+Animal fifth=Animal("","Is it a Parrot?");
+Animal sixth=Animal("","Is it a Monkey?");
 Animal seventh=Animal("Is it a Pet?","");
-Animal eighth=Animal("","Dog");
-Animal ninth=Animal("","Is it taller than 2 meters?");
-Animal tenth=Animal("","Giraffe");
-Animal eleventh= Animal("","Fox");
+Animal eighth=Animal("","Is it a Dog?");
+Animal ninth=Animal("Is it taller than 2 meters?","");
+Animal tenth=Animal("","Is it a Giraffe?");
+Animal eleventh= Animal("","Is it a Fox?");
 first.yesNode=second;
 first.noNode=third;
 
@@ -61,8 +103,12 @@ tenth.noNode=null;
 tenth.noNode=null;
 eleventh.yesNode=null;
 eleventh.noNode=null;
-traverseTree(first);
-print("End of Tree");
+
+Animal previousNode;
+while(true){
+traverseTree(first,previousNode);
+}
+
 
 
 
