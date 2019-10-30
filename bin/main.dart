@@ -11,15 +11,32 @@ class Animal{
 
 
 }
-bool nodePointer=false;
-createNewNode(Animal animal, Animal previousNode, bool nodePointer){
+
+createNewNode(Animal currentNode, Animal previousNode){
   print("What is the animal?");
   String newAnimal=stdin.readLineSync();
-  Animal newAnswerNode=Animal("","Is it a ${newAnimal}?");//New Node Created
-  print("What question would distinguish between an ${animal.name} and a ${newAnimal}?");
+  Animal newAnswerNode=Animal(""," ${newAnimal}?");//New Node Created
+  print("What question would distinguish between a ${currentNode.name} and a ${newAnimal}?");
   String newQuestion=stdin.readLineSync();
   Animal newQuestionNode=Animal("${newQuestion}","");
-  if(nodePointer) // add new node to yes node of previous node
+  print("Is the answer 'yes' or 'no' for a ${newAnimal}?");
+  String response=stdin.readLineSync();
+  if(response=='yes'){
+    previousNode.noNode=newQuestionNode;  //Node is not getting added . Does the order of the three statements matter?
+    newQuestionNode.yesNode=newAnswerNode;
+    newQuestionNode.noNode=currentNode;
+
+    print("New yes node added");
+  }
+  else if(response=='no'){
+
+    newQuestionNode.noNode=newAnswerNode;
+    newQuestionNode.yesNode=currentNode;
+    previousNode.noNode=newQuestionNode;
+    print("New no node added");
+  }
+
+  /*if(response=='yes') // add new node to yes node of previous node
       {
 
     previousNode.yesNode=newQuestionNode;
@@ -33,26 +50,26 @@ createNewNode(Animal animal, Animal previousNode, bool nodePointer){
     newQuestionNode.yesNode=newAnswerNode;
     newQuestionNode.noNode=animal;
 
-  }
+  }*/
 
 
 }
-void traverseTree(Animal animal, Animal previousNode){
-while(animal.yesNode!=null || animal.noNode!=null)
+void traverseTree(Animal currentNode, Animal previousNode){
+while(currentNode.yesNode!=null || currentNode.noNode!=null)
   {
-    print("${animal.questionText}");
+    print("${currentNode.questionText}");
     String response=stdin.readLineSync();
     if(response=="yes"){
-      previousNode=animal;
-      nodePointer=true;// save previous node
-      animal=animal.yesNode;
+      previousNode=currentNode;
+     // save previous node
+      currentNode=currentNode.yesNode;
     }else if(response=="no"){
-      nodePointer=false;
-      previousNode=animal;// save previous node
-      animal=animal.noNode;
+
+      previousNode=currentNode;// save previous node
+      currentNode=currentNode.noNode;
     }
   }
-  print("${animal.name}"); //depending upon users response we will create a new node or end the game
+  print(" Is it a ${currentNode.name}"); //depending upon users response we will create a new node or end the game
 String response=stdin.readLineSync();
 if(response=="yes"){
   print("End of Game!");
@@ -60,7 +77,7 @@ if(response=="yes"){
 else if(response=="no"){
   // Create a new Node
   print("Oops looks like I need to improve!");
-  createNewNode(animal,previousNode,nodePointer);
+  createNewNode(currentNode,previousNode);
 }
 
 
@@ -72,14 +89,14 @@ Animal first=Animal("Can it Fly?","");
 Animal second=Animal("Can it Swim","");
 Animal third=Animal("Can it climb trees?","");
 
-Animal fourth=Animal("","Is it a Duck?");
-Animal fifth=Animal("","Is it a Parrot?");
-Animal sixth=Animal("","Is it a Monkey?");
+Animal fourth=Animal("","Duck");
+Animal fifth=Animal("","Parrot");
+Animal sixth=Animal("","Monkey");
 Animal seventh=Animal("Is it a Pet?","");
-Animal eighth=Animal("","Is it a Dog?");
+Animal eighth=Animal("","Dog");
 Animal ninth=Animal("Is it taller than 2 meters?","");
-Animal tenth=Animal("","Is it a Giraffe?");
-Animal eleventh= Animal("","Is it a Fox?");
+Animal tenth=Animal("","Giraffe");
+Animal eleventh= Animal("","Fox");
 first.yesNode=second;
 first.noNode=third;
 
